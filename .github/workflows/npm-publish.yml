@@ -1,26 +1,54 @@
 name: Publish to NPM
 
 on:
-  release:
-    types: created
+  workflow_run:
+    workflows: ["release-please"]
+    types:
+      - completed
+    branches:
+      - main
 
 jobs:
-  build-and-publish:
+  publish:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          # We need to fetch all history and tags
+          fetch-depth: 0
+          
+      - name: Check if package.json version matches a git tag
+        id: check-version
+        run: |
+          # Get version from package.json
+          VERSION=$(node -p "require('./package.json').version")
+          
+          # Check if tag exists for this version
+          git fetch --tags
+          if git rev-parse "v$VERSION" >/dev/null 2>&1; then
+            echo "Found tag v$VERSION - proceeding with publish"
+            echo "should_publish=true" >> $GITHUB_OUTPUT
+          else
+            echo "No tag found for v$VERSION - skipping publish"
+            echo "should_publish=false" >> $GITHUB_OUTPUT
+          fi
 
       - uses: actions/setup-node@v4
+        if: steps.check-version.outputs.should_publish == 'true'
         with:
           node-version-file: .nvmrc
 
       - name: Install dependencies
+        if: steps.check-version.outputs.should_publish == 'true'
         run: npm ci
 
       - name: Build package
+        if: steps.check-version.outputs.should_publish == 'true'
         run: npm run build
 
       - name: Publish to NPM
+        if: steps.check-version.outputs.should_publish == 'true'
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
