@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/sds9-org/datadog-event/compare/v1.0.1...v1.0.2) (2025-04-05)
+
+
+### Bug Fixes
+
+* **publish:** updating publish ([#7](https://github.com/sds9-org/datadog-event/issues/7)) ([c2d25bb](https://github.com/sds9-org/datadog-event/commit/c2d25bba417c6ee514c4494bcfa2a381af4be577))
+* release please action ([#9](https://github.com/sds9-org/datadog-event/issues/9)) ([a5f7dc8](https://github.com/sds9-org/datadog-event/commit/a5f7dc8c5697acb6be16af616e219e64ba71a1be))
+
 ## [1.0.1](https://github.com/sds9-org/datadog-event/compare/v1.0.0...v1.0.1) (2025-04-05)
 
 
