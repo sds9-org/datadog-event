@@ -2,7 +2,7 @@ name: Publish to NPM
 
 on:
   workflow_run:
-    workflows: ["release-please"]
+    workflows: release-please
     types:
       - completed
     branches:
@@ -38,6 +38,7 @@ jobs:
         if: steps.check-version.outputs.should_publish == 'true'
         with:
           node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
         if: steps.check-version.outputs.should_publish == 'true'
