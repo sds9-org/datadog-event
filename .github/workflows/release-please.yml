@@ -16,13 +16,18 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: googleapis/release-please-action@v4
+      - uses: google-github-actions/release-please-action@v4
         id: release
         with:
           release-type: node
-        continue-on-error: true
 
+      # The logic below handles the npm publication.
+      # The if statements ensure that a publication only occurs when a new release is created.
       - uses: actions/checkout@v4
+        with:
+          # We need to fetch all history and tags
+          fetch-depth: 0
+        if: ${{ steps.release.outputs.release_created }}
 
       - name: tag major and minor versions
         if: ${{ steps.release.outputs.release_created }}
@@ -37,3 +42,25 @@ jobs:
           git tag -a v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }} -m "Release v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}"
           git push origin v${{ steps.release.outputs.major }}
           git push origin v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}
+
+      # The registry-url must be set for authentication to work on the npm publish step
+      # Ref: https://github.com/actions/setup-node/issues/342#issuecomment-950119520
+      - uses: actions/setup-node@v4
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          registry-url: https://registry.npmjs.org
+          node-version-file: .nvmrc
+
+      - if: ${{ steps.release.outputs.release_created }}
+        run: npm ci
+
+      - name: Build package
+        if: ${{ steps.release.outputs.release_created }}
+        run: npm run build
+
+      # Make sure that the NPM_TOKEN has been set as a "Repository secret"
+      - name: NPM Publish
+        if: ${{ steps.release.outputs.release_created }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish
