@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/sds9-org/datadog-event/compare/v1.0.0...v1.0.1) (2025-04-05)
+
+
+### Bug Fixes
+
+* **publish:** adding registery ([#5](https://github.com/sds9-org/datadog-event/issues/5)) ([f3b1b20](https://github.com/sds9-org/datadog-event/commit/f3b1b204ea96da8b0578c47373a83b23e1eeb9ab))
+
 ## 1.0.0 (2025-04-05)
 
 
