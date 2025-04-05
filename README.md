@@ -2,7 +2,7 @@
 
 A lightweight TypeScript library for sending events to Datadog's Events API.
 
-[![npm version](https://img.shields.io/npm/v/gh-datadog-event.svg)](https://www.npmjs.com/package/gh-datadog-event)
+[![npm version](https://img.shields.io/npm/v/gh-datadog-event.svg?cache=bust)](https://www.npmjs.com/package/gh-datadog-event)
 
 ## Overview
 
