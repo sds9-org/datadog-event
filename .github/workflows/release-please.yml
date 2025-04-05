@@ -15,12 +15,30 @@ permissions:
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
         with:
           release-type: node
         continue-on-error: true
+        
+      - name: Upload release info
+        if: steps.release.outcome == 'success'
+        run: |
+          mkdir -p /tmp/release-please-outputs
+          echo "${{ steps.release.outputs.release_created }}" > /tmp/release-please-outputs/release_created
+          echo "${{ steps.release.outputs.tag_name }}" > /tmp/release-please-outputs/tag_name
+      
+      - name: Upload release outputs artifact
+        if: steps.release.outcome == 'success'
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-please-outputs
+          path: /tmp/release-please-outputs/
+          retention-days: 1
 
       - uses: actions/checkout@v4
 
