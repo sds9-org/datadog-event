@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/sds9-org/datadog-event/compare/v1.4.0...v2.0.0) (2025-04-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* adding typedoc and bumping version ([#23](https://github.com/sds9-org/datadog-event/issues/23))
+
+### Features
+
+* adding typedoc and bumping version ([#23](https://github.com/sds9-org/datadog-event/issues/23)) ([5307926](https://github.com/sds9-org/datadog-event/commit/530792689dd607148ace4ae529680ff987e4264a))
+
 ## [1.4.0](https://github.com/sds9-org/datadog-event/compare/v1.3.0...v1.4.0) (2025-04-12)
 
 
