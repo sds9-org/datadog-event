@@ -58,7 +58,12 @@ export interface OptionalParameterProps {
  * console.log(event)
  */
 export const CreateEvent = async (title: string, text: string, optionalParams?: OptionalParameterProps): Promise<v1.EventCreateResponse> => {
-  const configuration = client.createConfiguration()
+  const configuration = client.createConfiguration({
+    authMethods: {
+      apiKeyAuth: process.env.DD_API_KEY || '',
+      appKeyAuth: process.env.DD_APP_KEY || ''
+    }
+  })
   const apiInstance = new v1.EventsApi(configuration)
   
   const params: v1.EventsApiCreateEventRequest = {
