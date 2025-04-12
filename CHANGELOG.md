@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/sds9-org/datadog-event/compare/v1.0.2...v1.1.0) (2025-04-12)
+
+
+### Features
+
+* enhance event interfaces with detailed JSDoc comments and examples ([#14](https://github.com/sds9-org/datadog-event/issues/14)) ([18221b5](https://github.com/sds9-org/datadog-event/commit/18221b5714186a29768c2e641d9afbe15724359f))
+
 ## [1.0.2](https://github.com/sds9-org/datadog-event/compare/v1.0.1...v1.0.2) (2025-04-05)
 
 
