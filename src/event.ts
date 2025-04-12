@@ -1,4 +1,4 @@
-import { client, v1 } from "@datadog/datadog-api-client"
+import { client, v1 } from '@datadog/datadog-api-client'
 
 /**
  * Optional parameters for creating an event
@@ -60,12 +60,24 @@ export interface OptionalParameterProps {
 export const CreateEvent = async (title: string, text: string, optionalParams?: OptionalParameterProps) => {
   const configuration = client.createConfiguration()
   const apiInstance = new v1.EventsApi(configuration)
+  
   const params: v1.EventsApiCreateEventRequest = {
     body: {
       title: title,
       text: text,
+      // Include all optional parameters if they exist
+      ...(optionalParams?.aggregationKey !== undefined && { aggregationKey: optionalParams.aggregationKey }),
+      ...(optionalParams?.alertType !== undefined && { alertType: optionalParams.alertType }),
+      ...(optionalParams?.dateHappened !== undefined && { dateHappened: optionalParams.dateHappened }),
+      ...(optionalParams?.deviceName !== undefined && { deviceName: optionalParams.deviceName }),
+      ...(optionalParams?.host !== undefined && { host: optionalParams.host }),
+      ...(optionalParams?.priority !== undefined && { priority: optionalParams.priority }),
+      ...(optionalParams?.relatedEventId !== undefined && { relatedEventId: optionalParams.relatedEventId }),
+      ...(optionalParams?.sourceTypeName !== undefined && { sourceTypeName: optionalParams.sourceTypeName }),
+      ...(optionalParams?.tags !== undefined && { tags: optionalParams.tags }),
     }
   }
+  
   const event = await apiInstance.createEvent(params)
   return event
 }
