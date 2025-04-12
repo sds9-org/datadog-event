@@ -4,7 +4,8 @@
       "release-type": "node",
       "package-name": "gh-datadog-event",
       "changelog-path": "CHANGELOG.md",
-      "initial-version": "2.1.0"
+      "initial-version": "2.2.0",
+      "release-as": "2.2.0"
     }
   },
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
