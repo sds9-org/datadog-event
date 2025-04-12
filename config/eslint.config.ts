@@ -1,5 +1,5 @@
-import { Linter } from 'eslint'
-import path from 'path'
+import { Linter } from 'eslint';
+import path from 'path';
 
 const config: Linter.FlatConfig[] = [
   {
@@ -22,7 +22,7 @@ const config: Linter.FlatConfig[] = [
       // General rules
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'no-duplicate-imports': 'error',
-      
+
       // TypeScript specific rules
       '@typescript-eslint/explicit-function-return-type': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',
@@ -31,11 +31,11 @@ const config: Linter.FlatConfig[] = [
       '@typescript-eslint/prefer-optional-chain': 'warn',
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/prefer-nullish-coalescing': 'warn',
-      
+
       // Keeping code clean
       'max-len': ['warn', { code: 200, ignoreComments: true, ignoreStrings: true }],
       'arrow-body-style': ['warn', 'as-needed'],
-      
+
       // Custom rules
       'require-test-file/require-test-file': 'error',
     },
@@ -49,7 +49,7 @@ const config: Linter.FlatConfig[] = [
         jest: true,
       },
     },
-  }
+  },
 ];
 
-export default config
+export default config;

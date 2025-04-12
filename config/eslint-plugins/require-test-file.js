@@ -21,22 +21,22 @@ module.exports = {
         return {
           Program(node) {
             const filename = context.getFilename();
-            
+
             // Skip test files themselves
             if (filename.endsWith('.test.ts')) {
               return;
             }
-            
+
             // Skip non-source files
             if (!filename.startsWith(path.resolve('src')) || !filename.endsWith('.ts')) {
               return;
             }
-            
+
             // Construct the expected test filename
             const dirname = path.dirname(filename);
             const basename = path.basename(filename, '.ts');
             const testFilePath = path.join(dirname, `${basename}.test.ts`);
-            
+
             // Check if the test file exists
             if (!fs.existsSync(testFilePath)) {
               context.report({

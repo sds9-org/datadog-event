@@ -1,4 +1,4 @@
-import { client, v1 } from '@datadog/datadog-api-client'
+import { client, v1 } from '@datadog/datadog-api-client';
 
 /**
  * @typedef {Object} RequestEventParams
@@ -16,18 +16,18 @@ import { client, v1 } from '@datadog/datadog-api-client'
  * @property {string} [additionalProperties] - Additional properties for the event in JSON format
  */
 export interface RequestEventParams {
-  aggregationKey?: string
-  alertType?: string
-  dateHappened?: number
-  deviceName?: string
-  host?: string
-  priority?: string
-  relatedEventId?: string
-  sourceTypeName?: string
-  tags?: string[]
-  text: string
-  title: string
-  additionalProperties?: string
+  aggregationKey?: string;
+  alertType?: string;
+  dateHappened?: number;
+  deviceName?: string;
+  host?: string;
+  priority?: string;
+  relatedEventId?: string;
+  sourceTypeName?: string;
+  tags?: string[];
+  text: string;
+  title: string;
+  additionalProperties?: string;
 }
 
 /**
@@ -36,8 +36,8 @@ export interface RequestEventParams {
  * @property {string} [aggregationKey] - Optional aggregation key to group events together
  */
 export interface CreateEventParams {
-  requests: RequestEventParams[]
-  aggregationKey?: string
+  requests: RequestEventParams[];
+  aggregationKey?: string;
 }
 
 /**
@@ -47,25 +47,25 @@ export interface CreateEventParams {
  * @property {string} [eventUrl] - URL of the created event in Datadog
  */
 export interface CreateEventResult {
-  request: RequestEventParams
-  response: v1.EventResponse
-  eventUrl: string | undefined
+  request: RequestEventParams;
+  response: v1.EventResponse;
+  eventUrl: string | undefined;
 }
 /**
  * Creates one or more events in Datadog using the Events API.
- * 
+ *
  * This function sends the provided event requests to the Datadog API and returns
  * the results. It requires the DATADOG_API_KEY and DATADOG_APP_KEY environment
  * variables to be set.
- * 
+ *
  * @param params - Parameters for creating events
  * @param params.requests - Array of event requests to send to Datadog
  * @param params.aggregationKey - Optional aggregation key to group events together
- * 
+ *
  * @returns Promise resolving to an array of results, one for each event request
- * 
+ *
  * @throws Error if DATADOG_API_KEY or DATADOG_APP_KEY environment variables are not set
- * 
+ *
  * @example
  * ```typescript
  * // Create multiple events
@@ -88,7 +88,7 @@ export interface CreateEventResult {
  *   ],
  *   aggregationKey: "deployment-123"
  * })
- * 
+ *
  * // Access event URLs from the results
  * results.forEach(result => {
  *   console.log(`Event created: ${result.eventUrl}`)
@@ -98,24 +98,30 @@ export interface CreateEventResult {
 export const CreateEvent = async (params: CreateEventParams): Promise<CreateEventResult[]> => {
   // https://docs.datadoghq.com/api/latest/#post-an-event
   // https://datadoghq.dev/datadog-api-client-typescript/classes/v1.EventsApi.html#createEvent
-  const apiKey: string | undefined = process.env.DATADOG_API_KEY
-  const appKey: string | undefined = process.env.DATADOG_APP_KEY
-  if (!apiKey) throw new Error('DATADOG_API_KEY is not set')
-  if (!appKey) throw new Error('DATADOG_APP_KEY is not set')
-  
+  const apiKey: string | undefined = process.env.DATADOG_API_KEY;
+  const appKey: string | undefined = process.env.DATADOG_APP_KEY;
+  if (!apiKey) throw new Error('DATADOG_API_KEY is not set');
+  if (!appKey) throw new Error('DATADOG_APP_KEY is not set');
+
   const configuration: client.Configuration = client.createConfiguration({
     authMethods: {
       apiKeyAuth: apiKey,
       appKeyAuth: appKey,
     },
-  })
-  const apiInstance: v1.EventsApi = new v1.EventsApi(configuration)
-  
-  const { requests, aggregationKey } = params
-  const results: CreateEventResult[] = await Promise.all(requests.map(async (request) => {
-    const parsedAlertType: v1.EventAlertType | undefined = request.alertType ? request.alertType as v1.EventAlertType : undefined
-    const parsedPriority: v1.EventPriority | undefined = request.priority ? request.priority as v1.EventPriority : undefined
-    const parsedAdditionalProperties: { [key: string]: string } | undefined = request.additionalProperties ? JSON.parse(request.additionalProperties) : undefined
+  });
+  const apiInstance: v1.EventsApi = new v1.EventsApi(configuration);
+
+  const { requests, aggregationKey } = params;
+  const results: CreateEventResult[] = await Promise.all(
+    requests.map(async request => {
+      const parsedAlertType: v1.EventAlertType | undefined = request.alertType
+        ? (request.alertType as v1.EventAlertType)
+        : undefined;
+      const parsedPriority: v1.EventPriority | undefined = request.priority
+        ? (request.priority as v1.EventPriority)
+        : undefined;
+      const parsedAdditionalProperties: { [key: string]: string } | undefined =
+        request.additionalProperties ? JSON.parse(request.additionalProperties) : undefined;
 
       const eventRequest: v1.EventCreateRequest = {
         aggregationKey: aggregationKey,
@@ -130,15 +136,15 @@ export const CreateEvent = async (params: CreateEventParams): Promise<CreateEven
         text: `&&& ${request.text}\n&&&`,
         title: request.title,
         additionalProperties: parsedAdditionalProperties,
-      }
-      const response = await apiInstance.createEvent({body: eventRequest})
-      const eventUrl = response?.event?.url
+      };
+      const response = await apiInstance.createEvent({ body: eventRequest });
+      const eventUrl = response?.event?.url;
       return {
         request,
         response,
         eventUrl,
-      }
-    }
-  ))
-  return results
-}
+      };
+    }),
+  );
+  return results;
+};
