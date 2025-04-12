@@ -1,5 +1,5 @@
-import { Linter } from 'eslint';
-import path from 'path';
+import { Linter } from 'eslint'
+import path from 'path'
 
 const config: Linter.FlatConfig[] = [
   {
@@ -16,6 +16,7 @@ const config: Linter.FlatConfig[] = [
     },
     plugins: {
       '@typescript-eslint': require('@typescript-eslint/eslint-plugin'),
+      'require-test-file': require('./eslint-plugins/require-test-file'),
     },
     rules: {
       // General rules
@@ -34,6 +35,9 @@ const config: Linter.FlatConfig[] = [
       // Keeping code clean
       'max-len': ['warn', { code: 200, ignoreComments: true, ignoreStrings: true }],
       'arrow-body-style': ['warn', 'as-needed'],
+      
+      // Custom rules
+      'require-test-file/require-test-file': 'error',
     },
     ignores: ['dist', 'node_modules', '**/*.js'],
   },
@@ -48,4 +52,4 @@ const config: Linter.FlatConfig[] = [
   }
 ];
 
-export default config;
+export default config

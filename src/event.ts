@@ -46,7 +46,7 @@ export const CreateEvent = async (params: CreateEventParams): Promise<CreateEven
   const results: CreateEventResult[] = await Promise.all(requests.map(async (request) => {
     const parsedAlertType: v1.EventAlertType | undefined = request.alertType ? request.alertType as v1.EventAlertType : undefined
     const parsedPriority: v1.EventPriority | undefined = request.priority ? request.priority as v1.EventPriority : undefined
-    const parsedAdditionalProperties: { [key: string]: any } | undefined = request.additionalProperties ? JSON.parse(request.additionalProperties) : undefined
+    const parsedAdditionalProperties: { [key: string]: string } | undefined = request.additionalProperties ? JSON.parse(request.additionalProperties) : undefined
 
       const eventRequest: v1.EventCreateRequest = {
         aggregationKey: aggregationKey,
