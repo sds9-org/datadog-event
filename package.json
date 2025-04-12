@@ -2,6 +2,7 @@
   "name": "gh-datadog-event",
   "version": "1.0.2",
   "description": "A TypeScript library for working with Datadog events",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -11,8 +12,8 @@
     "build": "tsc",
     "prepare": "npm run build",
     "test": "vitest",
-    "lint": "eslint --ext .ts ./src --config ./config/eslint.config.ts",
-    "lint:fix": "eslint --ext .ts ./src --config ./config/eslint.config.ts --fix"
+    "lint": "eslint --ext .ts ./src",
+    "lint:fix": "eslint --ext .ts ./src --fix"
   },
   "repository": {
     "type": "git",

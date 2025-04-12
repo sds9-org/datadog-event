@@ -4,8 +4,7 @@ import { client, v1 } from "@datadog/datadog-api-client"
 
 describe('CreateEvent', () => {
   beforeEach(() => {
-    vi.mock("@datadog/datadog-api-client", () => {
-      return {
+    vi.mock("@datadog/datadog-api-client", () => ({
         client: {
           createConfiguration: vi.fn().mockReturnValue({})
         },
@@ -14,8 +13,7 @@ describe('CreateEvent', () => {
             createEvent: vi.fn().mockResolvedValue({})
           }))
         }
-      }
-    })
+      }))
   })
 
   it('should call createEvent with the correct parameters', async () => {

@@ -1,21 +1,25 @@
-import { Linter } from 'eslint';
-import path from 'path';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-const config: Linter.FlatConfig[] = [
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+/** @type {import('eslint').Linter.FlatConfig[]} */
+export default [
   {
     languageOptions: {
-      parser: require('@typescript-eslint/parser'),
+      parser: await import('@typescript-eslint/parser'),
       parserOptions: {
         ecmaVersion: 2020,
         sourceType: 'module',
         project: [
-          path.resolve(__dirname, '../tsconfig.json'),
-          path.resolve(__dirname, '../tsconfig.test.json'),
+          './tsconfig.json',
+          './tsconfig.test.json',
         ],
+        tsconfigRootDir: __dirname,
       },
     },
     plugins: {
-      '@typescript-eslint': require('@typescript-eslint/eslint-plugin'),
+      '@typescript-eslint': (await import('@typescript-eslint/eslint-plugin')).default,
     },
     rules: {
       // General rules
@@ -47,5 +51,3 @@ const config: Linter.FlatConfig[] = [
     },
   }
 ];
-
-export default config;
