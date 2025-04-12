@@ -11,14 +11,6 @@ A lightweight TypeScript library for sending events to Datadog's Events API.
 
 `gh-datadog-event` makes it easy to send custom events to your Datadog dashboard from any Node.js application. Use it to track deployments, mark significant application events, or create custom alerts.
 
-## Features
-
-- 🚀 Simple, promise-based API
-- 💪 Full TypeScript support with comprehensive type definitions
-- 🔄 Support for all Datadog event properties
-- 🌍 Configurable for US, EU and other Datadog sites
-- ⚡ Lightweight with zero dependencies
-
 ## Installation
 
 ```bash
