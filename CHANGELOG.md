@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/sds9-org/datadog-event/compare/v1.1.0...v1.2.0) (2025-04-12)
+
+
+### Features
+
+* **prettier:** adding prettier ([#16](https://github.com/sds9-org/datadog-event/issues/16)) ([1948274](https://github.com/sds9-org/datadog-event/commit/1948274f72bcd5f9c2a0673631f0fab7f94f9b1b))
+
 ## [1.1.0](https://github.com/sds9-org/datadog-event/compare/v1.0.2...v1.1.0) (2025-04-12)
 
 ### Features
