@@ -3,6 +3,8 @@
 A lightweight TypeScript library for sending events to Datadog's Events API.
 
 [![npm version](https://img.shields.io/npm/v/gh-datadog-event.svg?cache=bust)](https://www.npmjs.com/package/gh-datadog-event)
+[![ESLint](https://img.shields.io/badge/ESLint-Configured-4B32C3?logo=eslint&logoColor=white)](docs/development/eslint.md)
+[![Vitest](https://img.shields.io/badge/Vitest-Configured-6E9F18?logo=vitest&logoColor=white)](docs/development/vitest.md)
 
 ## Overview
 
@@ -22,123 +24,17 @@ A lightweight TypeScript library for sending events to Datadog's Events API.
 npm install gh-datadog-event
 ```
 
-## Quick Start
-
-```typescript
-import { DatadogEvent, DatadogAlertType } from 'gh-datadog-event';
-
-// Initialize the client with your API key
-const client = new DatadogEvent({
-  apiKey: 'your_datadog_api_key',
-  // Optional: appKey: 'your_datadog_app_key',
-  // Optional: apiUrl: 'https://api.datadoghq.eu/api/v1' // For EU region
-});
-
-// Send a simple event
-async function sendEvent() {
-  try {
-    const response = await client.send({
-      title: 'Test Event',
-      text: 'This is a test event from the datadog-event library',
-      alertType: DatadogAlertType.INFO,
-      tags: ['env:test', 'service:my-service']
-    });
-    
-    console.log('Event sent successfully', response);
-  } catch (error) {
-    console.error('Failed to send event:', error);
-  }
-}
-
-sendEvent();
-```
-
-## Usage Examples
-
-### Basic Event
-
-```typescript
-await client.send({
-  title: 'Application Started',
-  text: 'The application has started successfully'
-});
-```
-
-### Error Event with Tags
-
-```typescript
-await client.send({
-  title: 'Database Connection Failed',
-  text: 'Unable to connect to the primary database',
-  alertType: DatadogAlertType.ERROR,
-  tags: ['service:database', 'env:production']
-});
-```
-
-### Deployment Event with Host Information
-
-```typescript
-await client.send({
-  title: 'New Version Deployed',
-  text: `Version v2.1.0 has been deployed to production`,
-  alertType: DatadogAlertType.SUCCESS,
-  host: 'web-server-01',
-  tags: ['service:web-api', 'team:backend', 'version:2.1.0']
-});
-```
-
-### Aggregating Related Events
-
-```typescript
-// First event
-await client.send({
-  title: 'Batch Processing Started',
-  text: 'Starting batch processing of 10,000 records',
-  aggregationKey: 'batch-process-123'
-});
-
-// Later, send a related event with the same aggregation key
-await client.send({
-  title: 'Batch Processing Completed',
-  text: 'Successfully processed 10,000 records',
-  alertType: DatadogAlertType.SUCCESS,
-  aggregationKey: 'batch-process-123'
-});
-```
-
-### Low Priority Event
-
-```typescript
-await client.send({
-  title: 'Cache Refresh',
-  text: 'Periodic cache refresh completed',
-  priority: DatadogPriority.LOW
-});
-```
-
 ## API Reference
 
 ### `DatadogEvent`
 
 Main class for interacting with the Datadog Events API.
 
-#### Constructor
-
-```typescript
-new DatadogEvent(options: DatadogEventOptions)
-```
-
 #### Options
 
 - `apiKey`: (required) Your Datadog API key
 - `appKey`: (optional) Your Datadog Application key
 - `apiUrl`: (optional) Custom API URL if not using the default US region
-
-#### Methods
-
-##### `send(eventProps: DatadogEventProperties): Promise<any>`
-
-Sends an event to Datadog and returns a promise that resolves to the API response.
 
 #### Event Properties
 
@@ -151,28 +47,6 @@ Sends an event to Datadog and returns a promise that resolves to the API respons
 - `aggregationKey`: (optional) Key to aggregate related events
 - `sourceTypeName`: (optional) Source type name
 - `deviceName`: (optional) Device name
-
-### Enums
-
-#### `DatadogAlertType`
-
-```typescript
-enum DatadogAlertType {
-  INFO = 'info',
-  WARNING = 'warning',
-  ERROR = 'error',
-  SUCCESS = 'success'
-}
-```
-
-#### `DatadogPriority`
-
-```typescript
-enum DatadogPriority {
-  NORMAL = 'normal',
-  LOW = 'low'
-}
-```
 
 ## Getting Your Datadog API Keys
 
@@ -190,3 +64,12 @@ For additional functionality, you may also want an Application key:
 ## Datadog Event Documentation
 
 For more information about Datadog events, see the [official Datadog Events documentation](https://docs.datadoghq.com/events/).
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a new branch for your feature or bugfix
+3. Write your code and tests
+4. Submit a pull request with a detailed description of your changes

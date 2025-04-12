@@ -1,69 +1,75 @@
-import { DatadogEventOptions, DatadogEventProperties } from './types';
+import { client, v1 } from '@datadog/datadog-api-client'
 
-/**
- * Class representing a Datadog event client
- * for sending events to Datadog's API
- */
-export class DatadogEvent {
-  private options: DatadogEventOptions;
-  private baseUrl: string;
+export interface RequestEventParams {
+  aggregationKey?: string
+  alertType?: string
+  dateHappened?: number
+  deviceName?: string
+  host?: string
+  priority?: string
+  relatedEventId?: string
+  sourceTypeName?: string
+  tags?: string[]
+  text: string
+  title: string
+  additionalProperties?: string
+}
 
-  /**
-   * Create a new DatadogEvent client instance
-   * @param options - Configuration options for the client
-   */
-  constructor(options: DatadogEventOptions) {
-    this.options = options;
-    this.baseUrl = options.apiUrl || 'https://api.datadoghq.com/api/v1';
-  }
+export interface CreateEventParams {
+  requests: RequestEventParams[]
+  aggregationKey?: string
+}
 
-  /**
-   * Send an event to Datadog
-   * @param eventProps - Properties of the event to send
-   * @returns Promise resolving to the API response
-   */
-  async send(eventProps: DatadogEventProperties): Promise<any> {
-    const url = `${this.baseUrl}/events`;
-    
-    // Construct the request body
-    const body = {
-      title: eventProps.title,
-      text: eventProps.text,
-      priority: eventProps.priority,
-      host: eventProps.host,
-      tags: eventProps.tags,
-      alert_type: eventProps.alertType,
-      aggregation_key: eventProps.aggregationKey,
-      source_type_name: eventProps.sourceTypeName,
-      device_name: eventProps.deviceName,
-    };
+export interface CreateEventResult {
+  request: RequestEventParams
+  response: v1.EventResponse
+  eventUrl: string | undefined
+}
 
-    // Clean up undefined values
-    Object.keys(body).forEach((key) => {
-      if (body[key as keyof typeof body] === undefined) {
-        delete body[key as keyof typeof body];
+export const CreateEvent = async (params: CreateEventParams): Promise<CreateEventResult[]> => {
+  // https://docs.datadoghq.com/api/latest/#post-an-event
+  // https://datadoghq.dev/datadog-api-client-typescript/classes/v1.EventsApi.html#createEvent
+  const apiKey: string | undefined = process.env.DATADOG_API_KEY
+  const appKey: string | undefined = process.env.DATADOG_APP_KEY
+  if (!apiKey) throw new Error('DATADOG_API_KEY is not set')
+  if (!appKey) throw new Error('DATADOG_APP_KEY is not set')
+  
+  const configuration: client.Configuration = client.createConfiguration({
+    authMethods: {
+      apiKeyAuth: apiKey,
+      appKeyAuth: appKey,
+    },
+  })
+  const apiInstance: v1.EventsApi = new v1.EventsApi(configuration)
+  
+  const { requests, aggregationKey } = params
+  const results: CreateEventResult[] = await Promise.all(requests.map(async (request) => {
+    const parsedAlertType: v1.EventAlertType | undefined = request.alertType ? request.alertType as v1.EventAlertType : undefined
+    const parsedPriority: v1.EventPriority | undefined = request.priority ? request.priority as v1.EventPriority : undefined
+    const parsedAdditionalProperties: { [key: string]: string } | undefined = request.additionalProperties ? JSON.parse(request.additionalProperties) : undefined
+
+      const eventRequest: v1.EventCreateRequest = {
+        aggregationKey: aggregationKey,
+        alertType: parsedAlertType,
+        dateHappened: request.dateHappened,
+        deviceName: request.deviceName,
+        host: request.host,
+        priority: parsedPriority,
+        relatedEventId: request.relatedEventId ? parseInt(request.relatedEventId) : undefined,
+        sourceTypeName: request.sourceTypeName,
+        tags: request.tags,
+        text: `&&& ${request.text}\n&&&`,
+        title: request.title,
+        additionalProperties: parsedAdditionalProperties,
       }
-    });
-
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'DD-API-KEY': this.options.apiKey,
-          ...(this.options.appKey ? { 'DD-APPLICATION-KEY': this.options.appKey } : {}),
-        },
-        body: JSON.stringify(body),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(`Datadog API error: ${response.status} ${JSON.stringify(errorData)}`);
+      const response = await apiInstance.createEvent({body: eventRequest})
+      const eventUrl = response?.event?.url
+      return {
+        request,
+        response,
+        eventUrl,
       }
-
-      return await response.json();
-    } catch (error) {
-      throw error;
     }
-  }
+  ))
+  return results
 }

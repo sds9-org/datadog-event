@@ -2,6 +2,7 @@
   "name": "gh-datadog-event",
   "version": "1.0.2",
   "description": "A TypeScript library for working with Datadog events",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -10,7 +11,10 @@
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest --config ./config/vitest.config.ts",
+    "test:coverage": "vitest run --coverage --config ./config/vitest.config.ts",
+    "lint": "eslint --config ./config/eslint.config.ts --ext .ts ./src",
+    "lint:fix": "eslint --config ./config/eslint.config.ts --ext .ts ./src --fix"
   },
   "repository": {
     "type": "git",
@@ -30,7 +34,15 @@
   "homepage": "https://github.com/sds9-org/datadog-event#readme",
   "devDependencies": {
     "@types/node": "^22.14.0",
+    "@typescript-eslint/eslint-plugin": "^8.29.1",
+    "@typescript-eslint/parser": "^8.29.1",
+    "eslint": "^9.24.0",
+    "jiti": "^2.4.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.1"
+  },
+  "dependencies": {
+    "@datadog/datadog-api-client": "^1.33.1"
   }
 }
