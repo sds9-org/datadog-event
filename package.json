@@ -16,7 +16,10 @@
     "lint": "eslint --config ./config/eslint.config.ts --ext .ts ./src",
     "lint:fix": "eslint --config ./config/eslint.config.ts --ext .ts ./src --fix",
     "format": "prettier --config ./config/prettier.config.ts \"**/*.{ts,tsx,js,jsx,json,md}\" --write",
-    "format:check": "prettier --config ./config/prettier.config.ts \"**/*.{ts,tsx,js,jsx,json,md}\" --check"
+    "format:check": "prettier --config ./config/prettier.config.ts \"**/*.{ts,tsx,js,jsx,json,md}\" --check",
+    "docs": "typedoc --options ./config/typedoc/typedoc.config.ts",
+    "docs:dev": "typedoc --watch --options ./config/typedoc/typedoc.config.ts",
+    "build:docs": "npm run docs && npm run test:coverage"
   },
   "repository": {
     "type": "git",
@@ -38,11 +41,14 @@
     "@types/node": "^22.14.0",
     "@typescript-eslint/eslint-plugin": "^8.29.1",
     "@typescript-eslint/parser": "^8.29.1",
+    "@vitest/coverage-v8": "^3.1.1",
     "eslint": "^9.24.0",
     "eslint-config-prettier": "^10.1.2",
     "jiti": "^2.4.2",
     "prettier": "^3.5.3",
     "ts-node": "^10.9.2",
+    "typedoc": "^0.28.2",
+    "typedoc-plugin-markdown": "^4.6.2",
     "typescript": "^5.8.3",
     "vitest": "^3.1.1"
   },
