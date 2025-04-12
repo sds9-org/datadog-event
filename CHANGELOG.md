@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/sds9-org/datadog-event/compare/v2.0.0...v2.1.0) (2025-04-12)
+
+
+### Features
+
+* bumping version to fix publish ([#25](https://github.com/sds9-org/datadog-event/issues/25)) ([6160250](https://github.com/sds9-org/datadog-event/commit/6160250f291d495ae249effb86b078a2f696cf2a))
+
 ## [2.0.0](https://github.com/sds9-org/datadog-event/compare/v1.4.0...v2.0.0) (2025-04-12)
 
 
