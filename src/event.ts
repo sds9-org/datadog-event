@@ -1,90 +1,75 @@
 import { client, v1 } from '@datadog/datadog-api-client'
 
-/**
- * Optional parameters for creating an event
- * @property aggregationKey - An arbitrary string to use for aggregation. Limited to 100 characters.
- * If you specify a key, all events using that key are grouped together in the Event Stream.
- * @property alertType - If an alert event is enabled, set its type.
- * For example, `error`, `warning`, `info`, `success`, `user_update`,
- * `recommendation`, and `snapshot`.
- * @property dateHappened - POSIX timestamp of the event. Must be sent as an integer (that is no quotes).
- * Limited to events no older than 18 hours
- * @property deviceName - A device name.
- * @property host - Host name to associate with the event.
- * Any tags associated with the host are also applied to this event.
- * @property priority - The priority of the event. For example, `normal` or `low`.
- * @property relatedEventId - ID of the parent event. Must be sent as an integer (that is no quotes).
- * @property sourceTypeName - The type of event being posted. Option examples include nagios, hudson, jenkins, my_apps, chef, puppet, git, bitbucket, etc.
- * A complete list of source attribute values [available here](https://docs.datadoghq.com/integrations/faq/list-of-api-source-attribute-value).
- * @property tags - A list of tags to apply to the event.
- * @example
- * const optionalParams = {
- *   aggregationKey: 'my-key',
- *   alertType: 'error',
- *   dateHappened: Date.now(),
- *   deviceName: 'my-device',
- *   host: 'my-host',
- *   priority: 'normal',
- *   relatedEventId: 12345,
- *   sourceTypeName: 'my-source',
- *   tags: ['tag1', 'tag2']
- * }
- */
-export interface OptionalParameterProps {
+export interface RequestEventParams {
   aggregationKey?: string
-  alertType?: v1.EventAlertType
+  alertType?: string
   dateHappened?: number
   deviceName?: string
   host?: string
-  priority?: v1.EventPriority
-  relatedEventId?: number
+  priority?: string
+  relatedEventId?: string
   sourceTypeName?: string
-  tags?: Array<string>
+  tags?: string[]
+  text: string
+  title: string
+  additionalProperties?: string
 }
 
-/**
- * Create an event in Datadog
- * @param title - The title of the event
- * @param text - The text of the event
- * @param optionalParams - Optional parameters for the event
- * @returns The created event
- * @throws ApiException if the request fails
- * @example
- * const event = await CreateEvent('title', 'text', {
- *   aggregationKey: 'my-key',
- *   alertType: 'error',
- *   dateHappened: Date.now()
- * })
- * console.log(event)
- */
-export const CreateEvent = async (title: string, text: string, optionalParams?: OptionalParameterProps): Promise<v1.EventCreateResponse> => {
-  const configuration = client.createConfiguration({
+export interface CreateEventParams {
+  requests: RequestEventParams[]
+  aggregationKey?: string
+}
+
+export interface CreateEventResult {
+  request: RequestEventParams
+  response: v1.EventResponse
+  eventUrl: string | undefined
+}
+
+export const CreateEvent = async (params: CreateEventParams): Promise<CreateEventResult[]> => {
+  // https://docs.datadoghq.com/api/latest/#post-an-event
+  // https://datadoghq.dev/datadog-api-client-typescript/classes/v1.EventsApi.html#createEvent
+  const apiKey: string | undefined = process.env.DATADOG_API_KEY
+  const appKey: string | undefined = process.env.DATADOG_APP_KEY
+  if (!apiKey) throw new Error('DATADOG_API_KEY is not set')
+  if (!appKey) throw new Error('DATADOG_APP_KEY is not set')
+  
+  const configuration: client.Configuration = client.createConfiguration({
     authMethods: {
-      apiKeyAuth: process.env.DD_API_KEY || '',
-      appKeyAuth: process.env.DD_APP_KEY || ''
-    }
+      apiKeyAuth: apiKey,
+      appKeyAuth: appKey,
+    },
   })
-  const apiInstance = new v1.EventsApi(configuration)
+  const apiInstance: v1.EventsApi = new v1.EventsApi(configuration)
   
-  const params: v1.EventsApiCreateEventRequest = {
-    body: {
-      title: title,
-      text: text,
-      // Include all optional parameters if they exist
-      ...(optionalParams?.aggregationKey !== undefined && { aggregationKey: optionalParams.aggregationKey }),
-      ...(optionalParams?.alertType !== undefined && { alertType: optionalParams.alertType }),
-      ...(optionalParams?.dateHappened !== undefined && { dateHappened: optionalParams.dateHappened }),
-      ...(optionalParams?.deviceName !== undefined && { deviceName: optionalParams.deviceName }),
-      ...(optionalParams?.host !== undefined && { host: optionalParams.host }),
-      ...(optionalParams?.priority !== undefined && { priority: optionalParams.priority }),
-      ...(optionalParams?.relatedEventId !== undefined && { relatedEventId: optionalParams.relatedEventId }),
-      ...(optionalParams?.sourceTypeName !== undefined && { sourceTypeName: optionalParams.sourceTypeName }),
-      ...(optionalParams?.tags !== undefined && { tags: optionalParams.tags }),
-    }
-  }
-  
-  const event = await apiInstance.createEvent(params)
-  return event
-}
+  const { requests, aggregationKey } = params
+  const results: CreateEventResult[] = await Promise.all(requests.map(async (request) => {
+    const parsedAlertType: v1.EventAlertType | undefined = request.alertType ? request.alertType as v1.EventAlertType : undefined
+    const parsedPriority: v1.EventPriority | undefined = request.priority ? request.priority as v1.EventPriority : undefined
+    const parsedAdditionalProperties: { [key: string]: any } | undefined = request.additionalProperties ? JSON.parse(request.additionalProperties) : undefined
 
-export default CreateEvent
+      const eventRequest: v1.EventCreateRequest = {
+        aggregationKey: aggregationKey,
+        alertType: parsedAlertType,
+        dateHappened: request.dateHappened,
+        deviceName: request.deviceName,
+        host: request.host,
+        priority: parsedPriority,
+        relatedEventId: request.relatedEventId ? parseInt(request.relatedEventId) : undefined,
+        sourceTypeName: request.sourceTypeName,
+        tags: request.tags,
+        text: `&&& ${request.text}\n&&&`,
+        title: request.title,
+        additionalProperties: parsedAdditionalProperties,
+      }
+      const response = await apiInstance.createEvent({body: eventRequest})
+      const eventUrl = response?.event?.url
+      return {
+        request,
+        response,
+        eventUrl,
+      }
+    }
+  ))
+  return results
+}

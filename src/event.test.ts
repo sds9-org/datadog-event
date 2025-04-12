@@ -17,7 +17,16 @@ describe('CreateEvent', () => {
   })
 
   it('should call createEvent with the correct parameters', async () => {
-    const event = await CreateEvent('title', 'text')
+    process.env.DATADOG_API_KEY = 'test-api-key'
+    process.env.DATADOG_APP_KEY = 'test-app-key'
+    const event = await CreateEvent({
+      requests: [
+        {
+          text: 'Test event',
+          title: 'Test title',
+          tags: ['tag1', 'tag2']
+        }
+      ]})
 
     expect(event).toBeDefined()
     expect(client.createConfiguration).toHaveBeenCalled()
