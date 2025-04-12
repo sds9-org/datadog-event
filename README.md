@@ -3,9 +3,10 @@
 A lightweight TypeScript library for sending events to Datadog's Events API.
 
 [![npm version](https://img.shields.io/npm/v/gh-datadog-event.svg?cache=bust)](https://www.npmjs.com/package/gh-datadog-event)
-[![ESLint](https://img.shields.io/badge/ESLint-Configured-4B32C3?logo=eslint&logoColor=white)](docs/development/eslint.md)
-[![Prettier](https://img.shields.io/badge/Prettier-Configured-F7B93E?logo=prettier&logoColor=white)](docs/development/prettier.md)
-[![Vitest](https://img.shields.io/badge/Vitest-Configured-6E9F18?logo=vitest&logoColor=white)](docs/development/vitest.md)
+[![ESLint](https://img.shields.io/badge/ESLint-4B32C3?logo=eslint&logoColor=white)](docs/development/eslint.md)
+[![Prettier](https://img.shields.io/badge/Prettier-ff0faf?logo=prettier&logoColor=white)](docs/development/prettier.md)
+[![Vitest](https://img.shields.io/badge/Vitest-6E9F18?logo=vitest&logoColor=white)](docs/development/vitest.md)
+[![TypeDoc](https://img.shields.io/badge/TypeDoc-9600ff?logo=typescript&logoColor=white)](docs/development/typedoc.md)
 
 ## Overview
 
