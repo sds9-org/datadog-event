@@ -4,6 +4,7 @@ A lightweight TypeScript library for sending events to Datadog's Events API.
 
 [![npm version](https://img.shields.io/npm/v/gh-datadog-event.svg?cache=bust)](https://www.npmjs.com/package/gh-datadog-event)
 [![ESLint](https://img.shields.io/badge/ESLint-Configured-4B32C3?logo=eslint&logoColor=white)](docs/development/eslint.md)
+[![Vitest](https://img.shields.io/badge/Vitest-Configured-6E9F18?logo=vitest&logoColor=white)](docs/development/vitest.md)
 
 ## Overview
 
