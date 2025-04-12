@@ -13,8 +13,8 @@
     "prepare": "npm run build",
     "test": "vitest --config ./config/vitest.config.ts",
     "test:coverage": "vitest run --coverage --config ./config/vitest.config.ts",
-    "lint": "eslint --ext .ts ./src",
-    "lint:fix": "eslint --ext .ts ./src --fix"
+    "lint": "eslint --config ./config/eslint.config.ts --ext .ts ./src",
+    "lint:fix": "eslint --config ./config/eslint.config.ts --ext .ts ./src --fix"
   },
   "repository": {
     "type": "git",
