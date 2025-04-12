@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/sds9-org/datadog-event/compare/v1.2.0...v1.3.0) (2025-04-12)
+
+
+### Features
+
+* **release:** adding release please config and manifest ([fbf00f9](https://github.com/sds9-org/datadog-event/commit/fbf00f900646ee3f45fbbdaaf37d53def566a77c))
+* **release:** adding release please config and manifest ([ae260ee](https://github.com/sds9-org/datadog-event/commit/ae260eea4aee6f5f306b17afb175adc4adb91027))
+
 ## [1.2.0](https://github.com/sds9-org/datadog-event/compare/v1.1.0...v1.2.0) (2025-04-12)
 
 
