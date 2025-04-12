@@ -57,7 +57,7 @@ export interface OptionalParameterProps {
  * })
  * console.log(event)
  */
-export const CreateEvent = async (title: string, text: string, optionalParams?: OptionalParameterProps): Promise<void> => {
+export const CreateEvent = async (title: string, text: string, optionalParams?: OptionalParameterProps): Promise<v1.EventCreateResponse> => {
   const configuration = client.createConfiguration()
   const apiInstance = new v1.EventsApi(configuration)
   
