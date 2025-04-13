@@ -19,7 +19,9 @@
     "format:check": "prettier --config ./config/prettier.config.ts \"**/*.{ts,tsx,js,jsx,json,md}\" --check",
     "docs": "typedoc --options ./config/typedoc/typedoc.config.ts",
     "docs:dev": "typedoc --watch --options ./config/typedoc/typedoc.config.ts",
-    "build:docs": "npm run docs && npm run test:coverage"
+    "build:docs": "npm run docs && npm run test:coverage",
+    "build:action": "ncc build src/action.ts -o dist -m -s",
+    "package": "npm run build && npm run build:action"
   },
   "repository": {
     "type": "git",
@@ -29,7 +31,8 @@
     "datadog",
     "events",
     "monitoring",
-    "typescript"
+    "typescript",
+    "github-action"
   ],
   "author": "",
   "license": "ISC",
@@ -41,6 +44,7 @@
     "@types/node": "^22.14.0",
     "@typescript-eslint/eslint-plugin": "^8.29.1",
     "@typescript-eslint/parser": "^8.29.1",
+    "@vercel/ncc": "^0.38.3",
     "@vitest/coverage-v8": "^3.1.1",
     "eslint": "^9.24.0",
     "eslint-config-prettier": "^10.1.2",
@@ -53,6 +57,8 @@
     "vitest": "^3.1.1"
   },
   "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@actions/github": "^6.0.0",
     "@datadog/datadog-api-client": "^1.33.1"
   }
 }

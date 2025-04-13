@@ -3,6 +3,7 @@ src/
 
 # TypeScript config
 tsconfig.json
+tsconfig.test.json
 
 # Development files
 .git/
@@ -14,9 +15,21 @@ node_modules/
 __tests__/
 *.test.ts
 jest.config.js
+coverage/
 
 # Editor files
 .vscode/
 .idea/
 *.swp
 .DS_Store
+
+# GitHub Action specific files
+src/action.ts
+src/action.test.ts
+action.yml
+.github/
+dist/index.js
+dist/index.mjs
+
+# Configuration
+config/

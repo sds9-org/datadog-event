@@ -1,0 +1,48 @@
+name: gh-datadog-event
+description: 'Create an event in Datadog via the Events API'
+author: 'sds9-org'
+branding:
+  icon: 'bell'
+  color: 'purple'
+
+inputs:
+  title:
+    description: 'Title of the event'
+    required: true
+  text:
+    description: 'Text description of the event'
+    required: true
+  alertType:
+    description: 'Type of alert (e.g., "error", "warning", "info")'
+    required: false
+    default: 'info'
+  priority:
+    description: 'Priority of the event (e.g., "normal", "low")'
+    required: false
+    default: 'normal'
+  host:
+    description: 'Host associated with the event'
+    required: false
+  tags:
+    description: 'Comma-separated list of tags associated with the event'
+    required: false
+  aggregationKey:
+    description: 'Aggregation key to group events together'
+    required: false
+  sourceTypeName:
+    description: 'Source type name for the event'
+    required: false
+  includeGitHubContext:
+    description: 'Whether to include GitHub context in tags (repo, owner, workflow, ref, sha)'
+    required: false
+    default: 'true'
+
+outputs:
+  eventUrl:
+    description: URL of the created event in Datadog
+  eventId:
+    description: ID of the created event
+
+runs:
+  using: node20
+  main: dist/index.js
