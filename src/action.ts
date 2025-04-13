@@ -5,7 +5,7 @@ import { CreateEvent, RequestEventParams } from './event';
 /**
  * Main function that runs when the GitHub Action is triggered
  */
-export async function run(): Promise<void> {
+export const run = async (): Promise<void> => {
   try {
     // Get inputs from the GitHub Action
     const title = core.getInput('title', { required: true });
@@ -67,4 +67,7 @@ export async function run(): Promise<void> {
   }
 }
 
-run();
+run().catch(error => {
+  console.error('Unhandled error:', error);
+  process.exit(1);
+});

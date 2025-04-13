@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import * as core from '@actions/core';
-import * as github from '@actions/github';
 import { CreateEvent } from './event';
 
 // Mock dependencies
