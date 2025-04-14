@@ -9,7 +9,6 @@ A lightweight TypeScript library for sending events to Datadog's Events API. Can
 [![TypeDoc](https://img.shields.io/badge/TypeDoc-9600ff?logo=typescript&logoColor=white)](docs/development/typedoc.md)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-222222?logo=github&logoColor=white)](https://sds9-org.github.io/datadog-event/)
 [![CI](https://github.com/sds9-org/datadog-event/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/sds9-org/datadog-event/actions/workflows/ci.yml)
-[![Test Action](https://github.com/sds9-org/datadog-event/actions/workflows/test-action.yml/badge.svg?branch=main&event=push)](https://github.com/sds9-org/datadog-event/actions/workflows/test-action.yml)
 
 ## Overview
 
