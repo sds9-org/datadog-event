@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/sds9-org/datadog-event/compare/v2.1.0...v2.2.0) (2025-04-14)
+
+
+### Features
+
+* **action:** adding the ability to call it via gha ([#27](https://github.com/sds9-org/datadog-event/issues/27)) ([5da9fbc](https://github.com/sds9-org/datadog-event/commit/5da9fbc495c97a10cd36e587078d334e720e0d97))
+
 ## [2.1.0](https://github.com/sds9-org/datadog-event/compare/v2.0.0...v2.1.0) (2025-04-12)
 
 
