@@ -20,3 +20,34 @@ jobs:
     - run: npm test
     
     - run: npm run lint
+
+    - run: npm run package
+  
+    - name: Verify GitHub Action builds successfully
+      run: |
+        if [ ! -f "dist/index.js" ]; then
+          echo "GitHub Action was not built correctly"
+          exit 1
+        fi
+    
+    # Only run the actual action if DATADOG_API_KEY and DATADOG_APP_KEY are set
+    - name: Create Datadog test event
+      if: ${{ env.DATADOG_API_KEY != '' && env.DATADOG_APP_KEY != '' }}
+      uses: ./
+      with:
+        title: 'Test Event from GitHub Action'
+        text: 'This is a test event created during GitHub Action testing'
+        alertType: 'info'
+        priority: 'normal'
+        tags: 'test,github-action'
+        includeGitHubContext: 'true'
+      env:
+        DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+        DATADOG_APP_KEY: ${{ secrets.DATADOG_APP_KEY }}
+
+    - name: Check if event was created successfully
+      if: ${{ steps.create-event.outputs.eventId != '' }}
+      run: |
+        echo "Event created successfully!"
+        echo "Event URL: ${{ steps.create-event.outputs.eventUrl }}"
+        echo "Event ID: ${{ steps.create-event.outputs.eventId }}"
