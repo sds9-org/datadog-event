@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/sds9-org/datadog-event/compare/v2.2.0...v2.3.0) (2025-04-14)
+
+
+### Features
+
+* **readme:** add GitHub Marketplace badge to README ([#30](https://github.com/sds9-org/datadog-event/issues/30)) ([fb0988e](https://github.com/sds9-org/datadog-event/commit/fb0988e72ea6a1bc8018972b523c493137d72a12))
+
 ## [2.2.0](https://github.com/sds9-org/datadog-event/compare/v2.1.0...v2.2.0) (2025-04-14)
 
 
