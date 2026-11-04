@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
-import { CreateEvent, RequestEventParams } from './event';
+import { CreateEvent, RequestEventParams } from './event.js';
 
 /**
  * Main function that runs when the GitHub Action is triggered

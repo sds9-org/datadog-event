@@ -143,3 +143,9 @@ Contributions are welcome! Please follow these steps:
 2. Create a new branch for your feature or bugfix
 3. Write your code and tests
 4. Submit a pull request with a detailed description of your changes
+
+## Development and package validation
+
+Use Node 24 LTS (`nvm use`) for the development toolchain. TypeScript 6.0.3 is pinned because the current TypeDoc and typescript-eslint releases support TypeScript 6.0 but not 7. ESLint, Prettier and Vitest are checked with `npm run check`; `npm run test:coverage` measures production source coverage. This library and GitHub Action have no browser UI, so Playwright is not applicable.
+
+`npm run package` builds the ESM library at `dist/index.js` and the independent GitHub Action bundle at `dist/action/index.js`. The action uses the Node 24 runtime. `npm run test:package` packs a temporary tarball, imports the public library and executes the action's missing-input failure path without credentials or API requests. This prevents the action bundle from overwriting the library's exports. `npm run docs` validates the existing documentation build locally. None of these commands publishes a package or deploys documentation.

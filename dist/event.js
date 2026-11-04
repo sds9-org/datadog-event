@@ -1,16 +1,4 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateEvent = void 0;
-const datadog_api_client_1 = require("@datadog/datadog-api-client");
+import { client, v1 } from '@datadog/datadog-api-client';
 /**
  * Creates one or more events in Datadog using the Events API.
  *
@@ -55,7 +43,7 @@ const datadog_api_client_1 = require("@datadog/datadog-api-client");
  * })
  * ```
  */
-const CreateEvent = (params) => __awaiter(void 0, void 0, void 0, function* () {
+export const CreateEvent = async (params) => {
     // https://docs.datadoghq.com/api/latest/#post-an-event
     // https://datadoghq.dev/datadog-api-client-typescript/classes/v1.EventsApi.html#createEvent
     const apiKey = process.env.DATADOG_API_KEY;
@@ -64,16 +52,15 @@ const CreateEvent = (params) => __awaiter(void 0, void 0, void 0, function* () {
         throw new Error('DATADOG_API_KEY is not set');
     if (!appKey)
         throw new Error('DATADOG_APP_KEY is not set');
-    const configuration = datadog_api_client_1.client.createConfiguration({
+    const configuration = client.createConfiguration({
         authMethods: {
             apiKeyAuth: apiKey,
             appKeyAuth: appKey,
         },
     });
-    const apiInstance = new datadog_api_client_1.v1.EventsApi(configuration);
+    const apiInstance = new v1.EventsApi(configuration);
     const { requests, aggregationKey } = params;
-    const results = yield Promise.all(requests.map((request) => __awaiter(void 0, void 0, void 0, function* () {
-        var _a;
+    const results = await Promise.all(requests.map(async (request) => {
         const parsedAlertType = request.alertType
             ? request.alertType
             : undefined;
@@ -95,14 +82,13 @@ const CreateEvent = (params) => __awaiter(void 0, void 0, void 0, function* () {
             title: request.title,
             additionalProperties: parsedAdditionalProperties,
         };
-        const response = yield apiInstance.createEvent({ body: eventRequest });
-        const eventUrl = (_a = response === null || response === void 0 ? void 0 : response.event) === null || _a === void 0 ? void 0 : _a.url;
+        const response = await apiInstance.createEvent({ body: eventRequest });
+        const eventUrl = response?.event?.url;
         return {
             request,
             response,
             eventUrl,
         };
-    })));
+    }));
     return results;
-});
-exports.CreateEvent = CreateEvent;
+};
