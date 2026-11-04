@@ -3,12 +3,17 @@ name: CI
 on:
   push:
 
+permissions:
+  contents: read
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
 
     - uses: actions/setup-node@v4
       with:
@@ -23,25 +28,3 @@ jobs:
 
     - name: Verify packed library and action offline
       run: npm run test:package
-
-    # Only run the actual action if DATADOG_API_KEY and DATADOG_APP_KEY are set
-    - name: Create Datadog test event
-      if: ${{ env.DATADOG_API_KEY != '' && env.DATADOG_APP_KEY != '' }}
-      uses: ./
-      with:
-        title: 'Test Event from GitHub Action'
-        text: 'This is a test event created during GitHub Action testing'
-        alertType: 'info'
-        priority: 'normal'
-        tags: 'test,github-action'
-        includeGitHubContext: 'true'
-      env:
-        DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
-        DATADOG_APP_KEY: ${{ secrets.DATADOG_APP_KEY }}
-
-    - name: Check if event was created successfully
-      if: ${{ steps.create-event.outputs.eventId != '' }}
-      run: |
-        echo "Event created successfully!"
-        echo "Event URL: ${{ steps.create-event.outputs.eventUrl }}"
-        echo "Event ID: ${{ steps.create-event.outputs.eventId }}"
