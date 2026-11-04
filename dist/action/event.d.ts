@@ -57,7 +57,7 @@ export interface CreateEventResult {
  *
  * @param params - Parameters for creating events
  * @param params.requests - Array of event requests to send to Datadog
- * @param params.aggregationKey - Optional aggregation key to group events together
+ * @param params.aggregationKey - Batch aggregation key; when defined (including an empty string), overrides each request key. Otherwise each request uses its own aggregationKey.
  *
  * @returns Promise resolving to an array of results, one for each event request
  *

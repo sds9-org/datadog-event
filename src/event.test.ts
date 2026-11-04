@@ -60,6 +60,30 @@ describe('CreateEvent', () => {
     expect(request).toEqual(original);
   });
 
+  it.each([
+    {
+      label: 'request-only key',
+      batch: undefined,
+      request: 'request-group',
+      expected: 'request-group',
+    },
+    {
+      label: 'batch override',
+      batch: 'batch-group',
+      request: 'request-group',
+      expected: 'batch-group',
+    },
+    { label: 'explicit empty batch key', batch: '', request: 'request-group', expected: '' },
+  ])('preserves aggregation key precedence for $label', async ({ batch, request, expected }) => {
+    await CreateEvent({
+      aggregationKey: batch,
+      requests: [{ title: 'Grouping', text: 'Test event', aggregationKey: request }],
+    });
+    expect(createEvent).toHaveBeenCalledExactlyOnceWith({
+      body: expect.objectContaining({ aggregationKey: expected }),
+    });
+  });
+
   it.each(['DATADOG_API_KEY', 'DATADOG_APP_KEY'])(
     'rejects missing %s before creating a client',
     async key => {

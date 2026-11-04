@@ -8,7 +8,7 @@ import { client, v1 } from '@datadog/datadog-api-client';
  *
  * @param params - Parameters for creating events
  * @param params.requests - Array of event requests to send to Datadog
- * @param params.aggregationKey - Optional aggregation key to group events together
+ * @param params.aggregationKey - Batch aggregation key; when defined (including an empty string), overrides each request key. Otherwise each request uses its own aggregationKey.
  *
  * @returns Promise resolving to an array of results, one for each event request
  *
@@ -69,7 +69,7 @@ export const CreateEvent = async (params) => {
             : undefined;
         const parsedAdditionalProperties = request.additionalProperties ? JSON.parse(request.additionalProperties) : undefined;
         const eventRequest = {
-            aggregationKey: aggregationKey,
+            aggregationKey: aggregationKey !== undefined ? aggregationKey : request.aggregationKey,
             alertType: parsedAlertType,
             dateHappened: request.dateHappened,
             deviceName: request.deviceName,
