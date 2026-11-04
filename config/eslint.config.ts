@@ -1,7 +1,8 @@
 import { Linter } from 'eslint';
 import path from 'path';
+import prettier from 'eslint-config-prettier';
 
-const config: Linter.FlatConfig[] = [
+const config: Linter.Config[] = [
   {
     languageOptions: {
       parser: require('@typescript-eslint/parser'),
@@ -50,6 +51,7 @@ const config: Linter.FlatConfig[] = [
       },
     },
   },
+  prettier,
 ];
 
 export default config;

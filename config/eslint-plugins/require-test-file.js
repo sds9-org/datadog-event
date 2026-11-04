@@ -20,7 +20,7 @@ module.exports = {
       create(context) {
         return {
           Program(node) {
-            const filename = context.getFilename();
+            const filename = context.filename;
 
             // Skip test files themselves
             if (filename.endsWith('.test.ts')) {

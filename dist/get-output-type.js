@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetOutputType = void 0;
-const GetOutputType = (type) => {
+export const GetOutputType = (type) => {
     if (type == 'warning')
         return '⚠️ Warning';
     if (type == 'error')
@@ -18,4 +15,3 @@ const GetOutputType = (type) => {
         return '📸 Snapshot';
     return undefined;
 };
-exports.GetOutputType = GetOutputType;

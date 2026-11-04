@@ -53,3 +53,9 @@ For the best development experience, install the Prettier extension for your IDE
 - VS Code: [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
 By using Prettier consistently, you help maintain a clean, readable codebase that's easier to review, understand, and maintain for all contributors.
+
+## Generated artifacts and CI
+
+`npm run check` verifies TypeScript, ESLint, Prettier and the Vitest suite. `npm test` is a single run suitable for CI; use `npm run test:watch` interactively. Generated `dist`, coverage and API documentation are excluded from Prettier so normal builds do not create formatting failures. ESLint applies `eslint-config-prettier` last while retaining semantic and test-file rules.
+
+This Node library/GitHub Action has no browser UI, so Playwright is not applicable to its current runtime. No release workflow is invoked by these local checks.

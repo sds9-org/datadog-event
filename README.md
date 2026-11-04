@@ -40,9 +40,9 @@ async function sendDeploymentEvent() {
         text: 'Service successfully deployed to production',
         alertType: 'info',
         priority: 'normal',
-        tags: ['environment:production', 'service:api', 'team:backend']
-      }
-    ]
+        tags: ['environment:production', 'service:api', 'team:backend'],
+      },
+    ],
   });
 
   console.log(`Event created: ${results[0].eventUrl}`);
@@ -62,7 +62,7 @@ name: Deploy and Notify
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   deploy:
@@ -70,9 +70,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       # Your deployment steps here...
-      
+
       - name: Notify Datadog of deployment
         uses: sds9-org/datadog-event@v2
         with:
@@ -89,24 +89,24 @@ jobs:
 
 ### Action Inputs
 
-| Input | Description | Required | Default |
-| ----- | ----------- | -------- | ------- |
-| `title` | Title of the event | Yes | |
-| `text` | Text description of the event | Yes | |
-| `alertType` | Type of alert (e.g., "error", "warning", "info") | No | `info` |
-| `priority` | Priority of the event (e.g., "normal", "low") | No | `normal` |
-| `host` | Host associated with the event | No | |
-| `tags` | Comma-separated list of tags | No | |
-| `aggregationKey` | Key to group events together | No | |
-| `sourceTypeName` | Source type name for the event | No | |
-| `includeGitHubContext` | Whether to include GitHub context in tags | No | `true` |
+| Input                  | Description                                      | Required | Default  |
+| ---------------------- | ------------------------------------------------ | -------- | -------- |
+| `title`                | Title of the event                               | Yes      |          |
+| `text`                 | Text description of the event                    | Yes      |          |
+| `alertType`            | Type of alert (e.g., "error", "warning", "info") | No       | `info`   |
+| `priority`             | Priority of the event (e.g., "normal", "low")    | No       | `normal` |
+| `host`                 | Host associated with the event                   | No       |          |
+| `tags`                 | Comma-separated list of tags                     | No       |          |
+| `aggregationKey`       | Key to group events together                     | No       |          |
+| `sourceTypeName`       | Source type name for the event                   | No       |          |
+| `includeGitHubContext` | Whether to include GitHub context in tags        | No       | `true`   |
 
 ### Action Outputs
 
-| Output | Description |
-| ------ | ----------- |
+| Output     | Description                         |
+| ---------- | ----------------------------------- |
 | `eventUrl` | URL of the created event in Datadog |
-| `eventId` | ID of the created event |
+| `eventId`  | ID of the created event             |
 
 ## API Reference
 
@@ -143,3 +143,13 @@ Contributions are welcome! Please follow these steps:
 2. Create a new branch for your feature or bugfix
 3. Write your code and tests
 4. Submit a pull request with a detailed description of your changes
+
+## Development and package validation
+
+Use Node 24 LTS (`nvm use`) for the development toolchain. TypeScript 6.0.3 is pinned because the current TypeDoc and typescript-eslint releases support TypeScript 6.0 but not 7. ESLint, Prettier and Vitest are checked with `npm run check`; `npm run test:coverage` measures production source coverage. This library and GitHub Action have no browser UI, so Playwright is not applicable.
+
+`npm run package` builds the ESM library at `dist/index.js` and the independent GitHub Action bundle at `dist/action/index.js`. The action uses the Node 24 runtime. `npm run test:package` packs a temporary tarball, imports the public library and executes the action's missing-input failure path without credentials or API requests. This prevents the action bundle from overwriting the library's exports. `npm run docs` validates the existing documentation build locally. None of these commands publishes a package or deploys documentation.
+
+### Event aggregation keys
+
+When calling `CreateEvent`, a defined batch-level `aggregationKey` overrides each request's key, including when the batch key is an empty string. If the batch key is omitted or `undefined`, each request uses its own `aggregationKey`. Requests without either key remain ungrouped by this option.

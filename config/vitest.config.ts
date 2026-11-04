@@ -9,13 +9,14 @@ export default defineConfig({
     exclude: ['node_modules', 'dist'],
     coverage: {
       provider: 'v8',
+      include: ['src/**/*.ts'],
       reporter: ['text', 'html', 'json', 'lcov'],
       exclude: ['node_modules/**', 'dist/**', 'config/**', '**/*.d.ts', '**/*.test.ts'],
     },
   },
   resolve: {
     alias: {
-      '@': resolve(__dirname, '../src'),
+      '@': resolve(import.meta.dirname, '../src'),
     },
   },
 });

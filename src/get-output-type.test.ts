@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { GetOutputType } from './get-output-type';
+import { GetOutputType } from './get-output-type.js';
 
 describe('GetOutputType', () => {
   it('should return warning icon and text for warning type', () => {

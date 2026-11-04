@@ -44,5 +44,5 @@ outputs:
     description: ID of the created event
 
 runs:
-  using: node20
-  main: dist/index.js
+  using: node24
+  main: dist/action/index.js

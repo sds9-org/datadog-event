@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import * as index from './index';
-import * as event from './event';
+import * as index from './index.js';
+import * as event from './event.js';
 
 describe('index exports', () => {
   it('should export all items from event module', () => {
