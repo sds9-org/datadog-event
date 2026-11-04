@@ -1,9 +1,8 @@
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { mkdtempSync, rmSync, symlinkSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
 
 const temporary = mkdtempSync(join(tmpdir(), 'datadog-package-'));
 try {
@@ -25,8 +24,42 @@ try {
     ),
   );
   execFileSync('tar', ['-xzf', join(temporary, packed[0].filename), '-C', temporary]);
-  symlinkSync(resolve('node_modules'), join(temporary, 'node_modules'), 'dir');
-  const library = pathToFileURL(join(temporary, 'package/dist/index.js')).href;
+  // Resolve through the package's public metadata, exactly as an installed consumer does.
+  const consumer = join(temporary, 'consumer');
+  mkdirSync(join(consumer, 'node_modules'), { recursive: true });
+  symlinkSync(join(temporary, 'package'), join(consumer, 'node_modules/gh-datadog-event'), 'dir');
+  symlinkSync(resolve('node_modules'), join(temporary, 'package/node_modules'), 'dir');
+  writeFileSync(join(consumer, 'package.json'), JSON.stringify({ type: 'module' }));
+  writeFileSync(
+    join(consumer, 'consumer.ts'),
+    `
+    import { CreateEvent, type RequestEventParams, type CreateEventParams, type CreateEventResult } from 'gh-datadog-event';
+    const request: RequestEventParams = { title: 'Offline consumer', text: 'Type checking only' };
+    const params: CreateEventParams = { requests: [request] };
+    const send: (params: CreateEventParams) => Promise<CreateEventResult[]> = CreateEvent;
+    // @ts-expect-error Text is required by the published event request contract.
+    const invalid: RequestEventParams = { title: 'Missing text' };
+    void params; void send; void invalid;
+  `,
+  );
+  writeFileSync(
+    join(consumer, 'tsconfig.json'),
+    JSON.stringify({
+      compilerOptions: {
+        strict: true,
+        noEmit: true,
+        module: 'NodeNext',
+        target: 'ES2022',
+        types: [],
+      },
+      files: ['consumer.ts'],
+    }),
+  );
+  execFileSync(
+    process.execPath,
+    [resolve('node_modules/typescript/bin/tsc'), '-p', join(consumer, 'tsconfig.json')],
+    { encoding: 'utf8', cwd: consumer },
+  );
   const result = spawnSync(
     process.execPath,
     [
@@ -34,13 +67,13 @@ try {
       '-e',
       `
     import assert from 'node:assert/strict';
-    const library = await import(${JSON.stringify(library)});
+    const library = await import('gh-datadog-event');
     assert.equal(typeof library.CreateEvent, 'function');
     await assert.rejects(library.CreateEvent({requests: []}), /DATADOG_API_KEY is not set/);
     console.log('Library import and credential guard passed');
   `,
     ],
-    { encoding: 'utf8', env: { PATH: process.env.PATH } },
+    { encoding: 'utf8', cwd: consumer, env: { PATH: process.env.PATH } },
   );
   assert.equal(result.status, 0, result.stdout + result.stderr);
   const action = spawnSync(process.execPath, [join(temporary, 'package/dist/action/index.js')], {
@@ -50,7 +83,7 @@ try {
   assert.equal(action.status, 1, action.stdout + action.stderr);
   assert.match(action.stdout + action.stderr, /Input required and not supplied: title/);
   console.log(
-    'Packed library and GitHub Action execute correctly without credentials or network requests.',
+    'Packed public exports, TypeScript declarations and GitHub Action validate without credentials or network requests.',
   );
 } finally {
   rmSync(temporary, { recursive: true, force: true });
