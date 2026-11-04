@@ -9,27 +9,25 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    
+
     - uses: actions/setup-node@v4
       with:
         node-version-file: .nvmrc
         cache: npm
-    
+
     - run: npm ci
-    
-    - run: npm test
-    
-    - run: npm run lint
+
+    - run: npm run check
 
     - run: npm run package
-  
+
     - name: Verify GitHub Action builds successfully
       run: |
         if [ ! -f "dist/index.js" ]; then
           echo "GitHub Action was not built correctly"
           exit 1
         fi
-    
+
     # Only run the actual action if DATADOG_API_KEY and DATADOG_APP_KEY are set
     - name: Create Datadog test event
       if: ${{ env.DATADOG_API_KEY != '' && env.DATADOG_APP_KEY != '' }}

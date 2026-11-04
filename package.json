@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",
-    "test": "vitest --config ./config/vitest.config.ts",
+    "test": "vitest run --config ./config/vitest.config.ts",
     "test:coverage": "vitest run --coverage --config ./config/vitest.config.ts",
     "lint": "eslint --config ./config/eslint.config.ts --ext .ts ./src",
     "lint:fix": "eslint --config ./config/eslint.config.ts --ext .ts ./src --fix",
@@ -21,7 +21,10 @@
     "docs:dev": "typedoc --watch --options ./config/typedoc/typedoc.config.ts",
     "build:docs": "npm run docs && npm run test:coverage",
     "build:action": "ncc build src/action.ts -o dist -m -s",
-    "package": "npm run build && npm run build:action"
+    "package": "npm run build && npm run build:action",
+    "test:watch": "vitest --config ./config/vitest.config.ts",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm test"
   },
   "repository": {
     "type": "git",

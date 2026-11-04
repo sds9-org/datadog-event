@@ -13,10 +13,15 @@ export const run = async (): Promise<void> => {
     const alertType = core.getInput('alertType');
     const priority = core.getInput('priority');
     const host = core.getInput('host');
-    const tags = core.getInput('tags') ? core.getInput('tags').split(',').map(tag => tag.trim()) : [];
+    const tags = core.getInput('tags')
+      ? core
+          .getInput('tags')
+          .split(',')
+          .map(tag => tag.trim())
+      : [];
     const aggregationKey = core.getInput('aggregationKey');
     const sourceTypeName = core.getInput('sourceTypeName');
-    
+
     // Add GitHub context to tags if specified
     const includeGitHubContext = core.getBooleanInput('includeGitHubContext');
     if (includeGitHubContext) {
@@ -26,10 +31,10 @@ export const run = async (): Promise<void> => {
         `owner:${owner}`,
         `workflow:${github.context.workflow}`,
         `ref:${github.context.ref}`,
-        `sha:${github.context.sha}`
+        `sha:${github.context.sha}`,
       );
     }
-    
+
     // Create event request
     const request: RequestEventParams = {
       title,
@@ -38,26 +43,25 @@ export const run = async (): Promise<void> => {
       priority,
       host,
       tags,
-      sourceTypeName
+      sourceTypeName,
     };
-    
+
     // Send event to Datadog
     const results = await CreateEvent({
       requests: [request],
-      aggregationKey
+      aggregationKey,
     });
-    
+
     // Set outputs
     if (results && results.length > 0) {
       core.setOutput('eventUrl', results[0].eventUrl);
       core.setOutput('eventId', results[0].response.event?.id?.toString());
     }
-    
+
     core.info(`Successfully sent event to Datadog: ${title}`);
     if (results[0].eventUrl) {
       core.info(`Event URL: ${results[0].eventUrl}`);
     }
-    
   } catch (error) {
     if (error instanceof Error) {
       core.setFailed(error.message);
@@ -65,7 +69,7 @@ export const run = async (): Promise<void> => {
       core.setFailed('An unknown error occurred');
     }
   }
-}
+};
 
 run().catch(error => {
   console.error('Unhandled error:', error);

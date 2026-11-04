@@ -2,57 +2,50 @@
 
 ## [2.3.0](https://github.com/sds9-org/datadog-event/compare/v2.2.0...v2.3.0) (2025-04-14)
 
-
 ### Features
 
-* **readme:** add GitHub Marketplace badge to README ([#30](https://github.com/sds9-org/datadog-event/issues/30)) ([fb0988e](https://github.com/sds9-org/datadog-event/commit/fb0988e72ea6a1bc8018972b523c493137d72a12))
+- **readme:** add GitHub Marketplace badge to README ([#30](https://github.com/sds9-org/datadog-event/issues/30)) ([fb0988e](https://github.com/sds9-org/datadog-event/commit/fb0988e72ea6a1bc8018972b523c493137d72a12))
 
 ## [2.2.0](https://github.com/sds9-org/datadog-event/compare/v2.1.0...v2.2.0) (2025-04-14)
 
-
 ### Features
 
-* **action:** adding the ability to call it via gha ([#27](https://github.com/sds9-org/datadog-event/issues/27)) ([5da9fbc](https://github.com/sds9-org/datadog-event/commit/5da9fbc495c97a10cd36e587078d334e720e0d97))
+- **action:** adding the ability to call it via gha ([#27](https://github.com/sds9-org/datadog-event/issues/27)) ([5da9fbc](https://github.com/sds9-org/datadog-event/commit/5da9fbc495c97a10cd36e587078d334e720e0d97))
 
 ## [2.1.0](https://github.com/sds9-org/datadog-event/compare/v2.0.0...v2.1.0) (2025-04-12)
 
-
 ### Features
 
-* bumping version to fix publish ([#25](https://github.com/sds9-org/datadog-event/issues/25)) ([6160250](https://github.com/sds9-org/datadog-event/commit/6160250f291d495ae249effb86b078a2f696cf2a))
+- bumping version to fix publish ([#25](https://github.com/sds9-org/datadog-event/issues/25)) ([6160250](https://github.com/sds9-org/datadog-event/commit/6160250f291d495ae249effb86b078a2f696cf2a))
 
 ## [2.0.0](https://github.com/sds9-org/datadog-event/compare/v1.4.0...v2.0.0) (2025-04-12)
 
-
 ### ⚠ BREAKING CHANGES
 
-* adding typedoc and bumping version ([#23](https://github.com/sds9-org/datadog-event/issues/23))
+- adding typedoc and bumping version ([#23](https://github.com/sds9-org/datadog-event/issues/23))
 
 ### Features
 
-* adding typedoc and bumping version ([#23](https://github.com/sds9-org/datadog-event/issues/23)) ([5307926](https://github.com/sds9-org/datadog-event/commit/530792689dd607148ace4ae529680ff987e4264a))
+- adding typedoc and bumping version ([#23](https://github.com/sds9-org/datadog-event/issues/23)) ([5307926](https://github.com/sds9-org/datadog-event/commit/530792689dd607148ace4ae529680ff987e4264a))
 
 ## [1.4.0](https://github.com/sds9-org/datadog-event/compare/v1.3.0...v1.4.0) (2025-04-12)
 
-
 ### Features
 
-* **version:** updating version ([#20](https://github.com/sds9-org/datadog-event/issues/20)) ([9773dc9](https://github.com/sds9-org/datadog-event/commit/9773dc9f9f98bd0d3310c44ebba9d2a39c24efb7))
+- **version:** updating version ([#20](https://github.com/sds9-org/datadog-event/issues/20)) ([9773dc9](https://github.com/sds9-org/datadog-event/commit/9773dc9f9f98bd0d3310c44ebba9d2a39c24efb7))
 
 ## [1.3.0](https://github.com/sds9-org/datadog-event/compare/v1.2.0...v1.3.0) (2025-04-12)
 
-
 ### Features
 
-* **release:** adding release please config and manifest ([fbf00f9](https://github.com/sds9-org/datadog-event/commit/fbf00f900646ee3f45fbbdaaf37d53def566a77c))
-* **release:** adding release please config and manifest ([ae260ee](https://github.com/sds9-org/datadog-event/commit/ae260eea4aee6f5f306b17afb175adc4adb91027))
+- **release:** adding release please config and manifest ([fbf00f9](https://github.com/sds9-org/datadog-event/commit/fbf00f900646ee3f45fbbdaaf37d53def566a77c))
+- **release:** adding release please config and manifest ([ae260ee](https://github.com/sds9-org/datadog-event/commit/ae260eea4aee6f5f306b17afb175adc4adb91027))
 
 ## [1.2.0](https://github.com/sds9-org/datadog-event/compare/v1.1.0...v1.2.0) (2025-04-12)
 
-
 ### Features
 
-* **prettier:** adding prettier ([#16](https://github.com/sds9-org/datadog-event/issues/16)) ([1948274](https://github.com/sds9-org/datadog-event/commit/1948274f72bcd5f9c2a0673631f0fab7f94f9b1b))
+- **prettier:** adding prettier ([#16](https://github.com/sds9-org/datadog-event/issues/16)) ([1948274](https://github.com/sds9-org/datadog-event/commit/1948274f72bcd5f9c2a0673631f0fab7f94f9b1b))
 
 ## [1.1.0](https://github.com/sds9-org/datadog-event/compare/v1.0.2...v1.1.0) (2025-04-12)
 

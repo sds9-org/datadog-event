@@ -40,9 +40,9 @@ async function sendDeploymentEvent() {
         text: 'Service successfully deployed to production',
         alertType: 'info',
         priority: 'normal',
-        tags: ['environment:production', 'service:api', 'team:backend']
-      }
-    ]
+        tags: ['environment:production', 'service:api', 'team:backend'],
+      },
+    ],
   });
 
   console.log(`Event created: ${results[0].eventUrl}`);
@@ -62,7 +62,7 @@ name: Deploy and Notify
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   deploy:
@@ -70,9 +70,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       # Your deployment steps here...
-      
+
       - name: Notify Datadog of deployment
         uses: sds9-org/datadog-event@v2
         with:
@@ -89,24 +89,24 @@ jobs:
 
 ### Action Inputs
 
-| Input | Description | Required | Default |
-| ----- | ----------- | -------- | ------- |
-| `title` | Title of the event | Yes | |
-| `text` | Text description of the event | Yes | |
-| `alertType` | Type of alert (e.g., "error", "warning", "info") | No | `info` |
-| `priority` | Priority of the event (e.g., "normal", "low") | No | `normal` |
-| `host` | Host associated with the event | No | |
-| `tags` | Comma-separated list of tags | No | |
-| `aggregationKey` | Key to group events together | No | |
-| `sourceTypeName` | Source type name for the event | No | |
-| `includeGitHubContext` | Whether to include GitHub context in tags | No | `true` |
+| Input                  | Description                                      | Required | Default  |
+| ---------------------- | ------------------------------------------------ | -------- | -------- |
+| `title`                | Title of the event                               | Yes      |          |
+| `text`                 | Text description of the event                    | Yes      |          |
+| `alertType`            | Type of alert (e.g., "error", "warning", "info") | No       | `info`   |
+| `priority`             | Priority of the event (e.g., "normal", "low")    | No       | `normal` |
+| `host`                 | Host associated with the event                   | No       |          |
+| `tags`                 | Comma-separated list of tags                     | No       |          |
+| `aggregationKey`       | Key to group events together                     | No       |          |
+| `sourceTypeName`       | Source type name for the event                   | No       |          |
+| `includeGitHubContext` | Whether to include GitHub context in tags        | No       | `true`   |
 
 ### Action Outputs
 
-| Output | Description |
-| ------ | ----------- |
+| Output     | Description                         |
+| ---------- | ----------------------------------- |
 | `eventUrl` | URL of the created event in Datadog |
-| `eventId` | ID of the created event |
+| `eventId`  | ID of the created event             |
 
 ## API Reference
 

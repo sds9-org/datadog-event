@@ -1,5 +1,6 @@
 import { Linter } from 'eslint';
 import path from 'path';
+import prettier from 'eslint-config-prettier';
 
 const config: Linter.FlatConfig[] = [
   {
@@ -50,6 +51,7 @@ const config: Linter.FlatConfig[] = [
       },
     },
   },
+  prettier,
 ];
 
 export default config;
